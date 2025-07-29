@@ -4,19 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { products } from '@/data/products';
+import { useCart } from '@/contexts/CartContext';
 import { ArrowLeft, CreditCard, Lock } from 'lucide-react';
 
 const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState('card');
+  const { items: cartItems, total: subtotal } = useCart();
   
-  // Mock cart items
-  const cartItems = [
-    { ...products[0], quantity: 2, selectedSize: 'M', selectedColor: 'Charcoal' },
-    { ...products[2], quantity: 1, selectedSize: 'S', selectedColor: 'Sage' },
-  ];
-
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const shipping = subtotal > 100 ? 0 : 15;
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
@@ -184,11 +178,11 @@ const Checkout = () => {
               {/* Cart Items */}
               <div className="space-y-4 mb-6">
                 {cartItems.map((item) => (
-                  <div key={`${item.id}-${item.selectedSize}-${item.selectedColor}`} className="flex space-x-3">
+                  <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}`} className="flex space-x-3">
                     <div className="relative">
                       <img
-                        src={item.image}
-                        alt={item.name}
+                        src={item.product.image}
+                        alt={item.product.name}
                         className="w-16 h-20 object-cover rounded-md"
                       />
                       <span className="absolute -top-2 -right-2 bg-sage text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -196,12 +190,12 @@ const Checkout = () => {
                       </span>
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-medium text-charcoal text-sm">{item.name}</h4>
+                      <h4 className="font-medium text-charcoal text-sm">{item.product.name}</h4>
                       <p className="text-xs text-warm-gray">
                         {item.selectedSize} / {item.selectedColor}
                       </p>
                       <p className="font-semibold text-charcoal">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        ${(item.product.price * item.quantity).toFixed(2)}
                       </p>
                     </div>
                   </div>

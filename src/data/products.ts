@@ -1,6 +1,12 @@
 import blazerImage from '@/assets/product-blazer.jpg';
 import sweaterImage from '@/assets/product-sweater.jpg';
 import dressImage from '@/assets/product-dress.jpg';
+import trenchImage from '@/assets/product-trench.jpg';
+import shirtImage from '@/assets/product-shirt.jpg';
+import skirtImage from '@/assets/product-skirt.jpg';
+import jeansImage from '@/assets/product-jeans.jpg';
+import turtleneckImage from '@/assets/product-turtleneck.jpg';
+import handbagImage from '@/assets/product-handbag.jpg';
 
 export interface Product {
   id: string;
@@ -111,13 +117,105 @@ export const products: Product[] = [
     isNew: true,
     care: ['Dry clean preferred', 'Steam to refresh', 'Store hanging'],
     material: '70% Wool, 30% Polyester'
+  },
+  {
+    id: '7',
+    name: 'Classic Trench Coat',
+    price: 298,
+    originalPrice: 350,
+    image: trenchImage,
+    category: 'women',
+    description: 'Timeless trench coat in water-resistant gabardine with classic belt and storm flaps.',
+    rating: 4.8,
+    reviews: 167,
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    colors: ['Beige', 'Navy', 'Black'],
+    isNew: false,
+    care: ['Dry clean only', 'Waterproof when needed', 'Store hanging'],
+    material: '100% Cotton Gabardine'
+  },
+  {
+    id: '8',
+    name: 'Premium Cotton Shirt',
+    price: 89,
+    image: shirtImage,
+    category: 'men',
+    description: 'Essential cotton shirt with classic collar and perfect tailoring for any occasion.',
+    rating: 4.5,
+    reviews: 134,
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+    colors: ['White', 'Light Blue', 'Sage'],
+    isNew: true,
+    care: ['Machine wash cold', 'Iron when needed', 'Dry clean for best results'],
+    material: '100% Premium Cotton'
+  },
+  {
+    id: '9',
+    name: 'Pleated Midi Skirt',
+    price: 125,
+    image: skirtImage,
+    category: 'women',
+    description: 'Elegant pleated skirt with comfortable waistband and sophisticated drape.',
+    rating: 4.6,
+    reviews: 98,
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    colors: ['Charcoal', 'Navy', 'Cream'],
+    isNew: true,
+    care: ['Dry clean preferred', 'Can hand wash cold', 'Iron on low'],
+    material: '65% Wool, 35% Polyester'
+  },
+  {
+    id: '10',
+    name: 'Dark Wash Jeans',
+    price: 145,
+    image: jeansImage,
+    category: 'men',
+    description: 'Premium selvedge denim with classic straight fit and dark indigo wash.',
+    rating: 4.7,
+    reviews: 203,
+    sizes: ['30', '32', '34', '36', '38'],
+    colors: ['Dark Indigo', 'Black', 'Faded Blue'],
+    isNew: false,
+    care: ['Wash inside out', 'Cold water only', 'Air dry recommended'],
+    material: '100% Organic Cotton Denim'
+  },
+  {
+    id: '11',
+    name: 'Merino Turtleneck',
+    price: 118,
+    image: turtleneckImage,
+    category: 'women',
+    description: 'Soft merino wool turtleneck with ribbed collar and cuffs. Perfect for layering.',
+    rating: 4.9,
+    reviews: 145,
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    colors: ['Cream', 'Charcoal', 'Sage'],
+    isNew: true,
+    care: ['Hand wash cold', 'Lay flat to dry', 'Store folded'],
+    material: '100% Merino Wool'
+  },
+  {
+    id: '12',
+    name: 'Structured Handbag',
+    price: 245,
+    originalPrice: 295,
+    image: handbagImage,
+    category: 'accessories',
+    description: 'Minimalist leather handbag with adjustable strap and interior organization.',
+    rating: 4.8,
+    reviews: 89,
+    sizes: ['One Size'],
+    colors: ['Sage', 'Black', 'Tan'],
+    isNew: false,
+    care: ['Leather conditioner monthly', 'Store with dust bag', 'Avoid water'],
+    material: 'Full Grain Leather'
   }
 ];
 
 export const categories = [
-  { name: 'Women', slug: 'women', count: 4 },
-  { name: 'Men', slug: 'men', count: 2 },
-  { name: 'Accessories', slug: 'accessories', count: 0 },
+  { name: 'Women', slug: 'women', count: 6 },
+  { name: 'Men', slug: 'men', count: 4 },
+  { name: 'Accessories', slug: 'accessories', count: 1 },
 ];
 
 export const featuredProducts = products.filter(p => p.isNew).slice(0, 3);

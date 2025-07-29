@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useCart } from '@/contexts/CartContext';
+import { useWishlist } from '@/contexts/WishlistContext';
+import { useToast } from '@/hooks/use-toast';
 import ProductCard from '@/components/ProductCard';
 import { products } from '@/data/products';
 import { Heart, Star, ArrowLeft, Plus, Minus, Truck, RotateCcw, Shield } from 'lucide-react';
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const { addItem } = useCart();
+  const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist();
+  const { toast } = useToast();
   const product = products.find(p => p.id === id);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
@@ -28,6 +34,49 @@ const ProductDetail = () => {
 
   const relatedProducts = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
   const isOnSale = product.originalPrice && product.originalPrice > product.price;
+  const inWishlist = isInWishlist(product.id);
+
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      toast({
+        title: "Please select a size",
+        description: "You need to select a size before adding to cart.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (!selectedColor) {
+      toast({
+        title: "Please select a color", 
+        description: "You need to select a color before adding to cart.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    addItem(product, selectedSize, selectedColor, quantity);
+    toast({
+      title: "Added to cart!",
+      description: `${product.name} (${selectedSize}, ${selectedColor}) has been added to your cart.`,
+    });
+  };
+
+  const handleWishlistToggle = () => {
+    if (inWishlist) {
+      removeFromWishlist(product.id);
+      toast({
+        title: "Removed from wishlist",
+        description: `${product.name} has been removed from your wishlist.`,
+      });
+    } else {
+      addToWishlist(product);
+      toast({
+        title: "Added to wishlist!",
+        description: `${product.name} has been added to your wishlist.`,
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen py-8">
@@ -165,12 +214,17 @@ const ProductDetail = () => {
 
             {/* Add to Cart */}
             <div className="space-y-4">
-              <Button variant="sage" size="lg" className="w-full">
+              <Button variant="sage" size="lg" className="w-full" onClick={handleAddToCart}>
                 Add to Cart - ${(product.price * quantity).toFixed(2)}
               </Button>
-              <Button variant="outline" size="lg" className="w-full">
-                <Heart className="h-4 w-4 mr-2" />
-                Add to Wishlist
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="w-full"
+                onClick={handleWishlistToggle}
+              >
+                <Heart className={`h-4 w-4 mr-2 ${inWishlist ? 'fill-current text-red-500' : ''}`} />
+                {inWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
               </Button>
             </div>
 

@@ -2,17 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { products } from '@/data/products';
+import { useCart } from '@/contexts/CartContext';
 import { Minus, Plus, X, ArrowLeft } from 'lucide-react';
 
 const Cart = () => {
-  // Mock cart items - in real app this would come from state management
-  const cartItems = [
-    { ...products[0], quantity: 2, selectedSize: 'M', selectedColor: 'Charcoal' },
-    { ...products[2], quantity: 1, selectedSize: 'S', selectedColor: 'Sage' },
-  ];
-
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const { items: cartItems, total: subtotal, removeItem, updateQuantity } = useCart();
   const shipping = subtotal > 100 ? 0 : 15;
   const total = subtotal + shipping;
 
@@ -54,12 +48,12 @@ const Cart = () => {
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-6">
             {cartItems.map((item) => (
-              <div key={`${item.id}-${item.selectedSize}-${item.selectedColor}`} className="bg-card rounded-lg shadow-soft p-6">
+              <div key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}`} className="bg-card rounded-lg shadow-soft p-6">
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="flex-shrink-0">
                     <img
-                      src={item.image}
-                      alt={item.name}
+                      src={item.product.image}
+                      alt={item.product.name}
                       className="w-24 h-30 object-cover rounded-md"
                     />
                   </div>
@@ -67,34 +61,46 @@ const Cart = () => {
                   <div className="flex-1 space-y-4">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="font-semibold text-charcoal">{item.name}</h3>
+                        <h3 className="font-semibold text-charcoal">{item.product.name}</h3>
                         <p className="text-warm-gray text-sm">
                           Size: {item.selectedSize} | Color: {item.selectedColor}
                         </p>
                         <p className="text-lg font-semibold text-charcoal mt-2">
-                          ${item.price}
+                          ${item.product.price}
                         </p>
                       </div>
-                      <Button variant="ghost" size="icon">
+                      <Button 
+                        variant="ghost" 
+                        size="icon"
+                        onClick={() => removeItem(item.product.id, item.selectedSize, item.selectedColor)}
+                      >
                         <X className="h-4 w-4" />
                       </Button>
                     </div>
                     
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <Button variant="outline" size="icon">
+                        <Button 
+                          variant="outline" 
+                          size="icon"
+                          onClick={() => updateQuantity(item.product.id, item.selectedSize, item.selectedColor, item.quantity - 1)}
+                        >
                           <Minus className="h-4 w-4" />
                         </Button>
                         <span className="text-lg font-medium w-8 text-center">
                           {item.quantity}
                         </span>
-                        <Button variant="outline" size="icon">
+                        <Button 
+                          variant="outline" 
+                          size="icon"
+                          onClick={() => updateQuantity(item.product.id, item.selectedSize, item.selectedColor, item.quantity + 1)}
+                        >
                           <Plus className="h-4 w-4" />
                         </Button>
                       </div>
                       
                       <p className="text-lg font-bold text-charcoal">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        ${(item.product.price * item.quantity).toFixed(2)}
                       </p>
                     </div>
                   </div>

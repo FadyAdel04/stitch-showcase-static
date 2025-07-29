@@ -2,24 +2,50 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useCart } from '@/contexts/CartContext';
+import { useWishlist } from '@/contexts/WishlistContext';
+import { useToast } from '@/hooks/use-toast';
+import { Product } from '@/data/products';
 import { Heart, Star } from 'lucide-react';
-
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  rating: number;
-  isNew?: boolean;
-  originalPrice?: number;
-}
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { addItem } = useCart();
+  const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist();
+  const { toast } = useToast();
   const isOnSale = product.originalPrice && product.originalPrice > product.price;
+  const inWishlist = isInWishlist(product.id);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product, product.sizes[0], product.colors[0]);
+    toast({
+      title: "Added to cart!",
+      description: `${product.name} has been added to your cart.`,
+    });
+  };
+
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (inWishlist) {
+      removeFromWishlist(product.id);
+      toast({
+        title: "Removed from wishlist",
+        description: `${product.name} has been removed from your wishlist.`,
+      });
+    } else {
+      addToWishlist(product);
+      toast({
+        title: "Added to wishlist!",
+        description: `${product.name} has been added to your wishlist.`,
+      });
+    }
+  };
 
   return (
     <div className="group relative bg-card rounded-lg shadow-soft hover:shadow-medium transition-smooth overflow-hidden">
@@ -51,14 +77,17 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-3 right-3 bg-background/80 hover:bg-background opacity-0 group-hover:opacity-100 transition-smooth"
+          onClick={handleWishlistToggle}
+          className={`absolute top-3 right-3 bg-background/80 hover:bg-background opacity-0 group-hover:opacity-100 transition-smooth ${
+            inWishlist ? 'text-red-500' : ''
+          }`}
         >
-          <Heart className="h-4 w-4" />
+          <Heart className={`h-4 w-4 ${inWishlist ? 'fill-current' : ''}`} />
         </Button>
 
         {/* Quick Add to Cart */}
         <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-smooth">
-          <Button variant="sage" size="sm" className="w-full">
+          <Button variant="sage" size="sm" className="w-full" onClick={handleAddToCart}>
             Add to Cart
           </Button>
         </div>

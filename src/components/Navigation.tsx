@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useCart } from '@/contexts/CartContext';
+import SearchModal from './SearchModal';
 import { 
   ShoppingBag, 
   Menu, 
   X, 
   User, 
-  Search,
   Heart
 } from 'lucide-react';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { itemCount } = useCart();
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -54,9 +56,7 @@ const Navigation = () => {
 
           {/* Action Icons */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="hidden sm:flex">
-              <Search className="h-5 w-5" />
-            </Button>
+            <SearchModal />
             <Button variant="ghost" size="icon" className="hidden sm:flex">
               <Heart className="h-5 w-5" />
             </Button>
@@ -68,9 +68,11 @@ const Navigation = () => {
             <Link to="/cart">
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingBag className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 bg-sage text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  2
-                </span>
+                {itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-sage text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
               </Button>
             </Link>
 
@@ -105,10 +107,7 @@ const Navigation = () => {
                 </Link>
               ))}
               <div className="pt-4 flex space-x-4">
-                <Button variant="ghost" size="sm" className="flex-1">
-                  <Search className="h-4 w-4 mr-2" />
-                  Search
-                </Button>
+                <SearchModal />
               </div>
             </div>
           </div>
