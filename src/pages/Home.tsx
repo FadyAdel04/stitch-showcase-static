@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import ProductCard from "@/components/ProductCard";
 import { useProducts, categories, Product } from "@/data/products";
-import heroImage from "/assets/hero-image.jpg";
+import heroImage from "/hero-image.jpg";
 import { ArrowRight, Star, Truck, Shield, RotateCcw } from "lucide-react";
 
 const Home = () => {

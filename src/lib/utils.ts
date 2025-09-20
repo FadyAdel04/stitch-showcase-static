@@ -5,9 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// Utility function to get the full image URL from assets
+// Utility function to get the full image URL from public folder
 export function getImageUrl(imagePath: string): string {
-  // Remove leading slash if present
-  const cleanPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
-  return `/src/assets/${cleanPath}`;
+  // Return the path as-is since images are now in public folder
+  return imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
 }

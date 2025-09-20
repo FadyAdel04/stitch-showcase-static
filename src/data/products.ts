@@ -1,13 +1,3 @@
-import blazerImage from '@/assets/product-blazer.jpg';
-import sweaterImage from '@/assets/product-sweater.jpg';
-import dressImage from '@/assets/product-dress.jpg';
-import trenchImage from '@/assets/product-trench.jpg';
-import shirtImage from '@/assets/product-shirt.jpg';
-import skirtImage from '@/assets/product-skirt.jpg';
-import jeansImage from '@/assets/product-jeans.jpg';
-import turtleneckImage from '@/assets/product-turtleneck.jpg';
-import handbagImage from '@/assets/product-handbag.jpg';
-
 export interface Product {
   id: string;
   name: string;
