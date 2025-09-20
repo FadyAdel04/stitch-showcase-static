@@ -1,0 +1,21 @@
+[
+  {
+    "name": "Women",
+    "slug": "women",
+    "count": 6,
+    "image": "/product-dress.jpg"
+  },
+  {
+    "name": "Men", 
+    "slug": "men",
+    "count": 4,
+    "image": "/product-sweater.jpg"
+  },
+  {
+    "name": "Accessories",
+    "slug": "accessories", 
+    "count": 1,
+    "image": "/product-handbag.jpg"
+  }
+]
+
